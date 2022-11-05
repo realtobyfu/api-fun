@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> API Fun</title>
+    <meta charset="utf-8">
+    <script>
+        function getData() {
+            // using AJAX
+            let request = new XMLHttpRequest();
+            console.log("1 - Request Created");
+            request.open("GET", "https://api.chucknorris.io/jokes/random?category=animal", true);
+            console.log("2 - Opened Request");
+            request.onreadystatechange = function () {
+                console.log("3 - Ready State Fired");
+                if (request.readyState == 4 && request.status == 200) {
+                    var data = request.responseText;
+                    data = JSON.parse(data);
+                    var strHTML1;
+                    strHTML1 = "<h3>Chuck Norris Joke: </h3><p>" + data.value + "</p><h3>Meta-data: </h3> <p>updated at: " + data.updated_at.substring(0,10) + "ID: " + data.id + "</p><br>";
+                    document.getElementById("part1").innerHTML = strHTML1;
+                } else if (request.readyState == 4 && request.status != 200) {
+                    document.getElementById("part1").innerHTML = "Something is Wrong! Check the Log";
+                }
+                else if (request.readyState == 3) {
+                    document.getElementById("part1").innerHTML = "Almost there...";
+                }
+            }
+            request.send();
+            console.log("4 - Request Sent");
+
+            // using fetch
+            res = fetch("https://api.chucknorris.io/jokes/random?category=animal")
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("part2").innerHTML = "<h3>Chuck Norris Joke: </h3><p>" + data.value + "</p><h3>Meta-data: </h3> <p>updated at: " + data.updated_at.substring(0,10) + "ID: " + data.id + "</p>";
+            })
+            .catch(error => console.log(error));
+        }
+        </script>
+        <style>
+            h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 3rem;
+            line-height: 1.5;
+            }
+
+            h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 2.5rem;
+            line-height: 1.5;
+            }
+
+            h3 {
+            font-family:'Inconsolata', monospace;
+            font-weight: 300;
+            font-size: 1.5rem;
+            line-height: 2;
+            }
+
+            p {
+            font-family: 'Inconsolata', sans-serif;
+            font-weight: 300;
+            font-size: 1.5rem;
+            line-height: 1.5;
+            }
+            body {
+                background-color: white;
+                padding-left: 5%;
+            }
+            img {
+                width: 15rem;
+                padding-left: 20%;
+                position: relative;
+                transform: rotate(10deg);
+            }
+        </style>
+</head>
+
+<body onload="getData()">
+  <section>
+  <h1>Getting Data from API</h1>
+  <img src="https://i.pinimg.com/564x/b9/17/36/b9173684a35d54071b17a69b9d3fd8c2.jpg" alt="chucknorris">
+  <h2>AJAX Data</h2>
+  <div id="part1"> </div>
+  <div id="part2"> </div>
+  <br>
+  <h2>Answers to Questions</h2>
+  <div id="questions">
+    <ul>
+        <li> <h3>Selection for website</h3>
+            <p>The API I selected is a API that generates a random Chuck Norris joke, it returns a json string that contains the id,
+            url and the "value" of the joke, which is the text. I specifically used added in the query so the joke will be about animals</p></li>
+        <li><h3>Original website</h3><p>Click this link to view the <a href="https://api.chucknorris.io/">website</a>.</p></li>
+        <li><h3>API Request</h3><p>The option I used is "category=animal"</p></li>
+        <li><h3>My API is helpful</h3><p>There are two applications: <br>1. When the user gets bored, there is some fun jokes to enjoy. <br> 2. It gives us more insight into Chuck Norris</p></li>
+    </ul>
+  </div>
+  </section>
+
+</body>
+</html>
+
+
+
